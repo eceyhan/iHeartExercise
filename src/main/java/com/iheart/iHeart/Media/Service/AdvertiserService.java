@@ -16,13 +16,12 @@ public class AdvertiserService {
 	AdvertiserRepository repository;
 	
 	
-	public Advertiser getById(Long id) {
-		return repository.getById(id);
-	}
-
-	
 	public List<Advertiser> getAll() {
 		return repository.getAll();
+	}
+	
+	public Advertiser getById(Long id) {
+		return repository.getById(id);
 	}
 	
 	public void create(Advertiser advertiser) {
