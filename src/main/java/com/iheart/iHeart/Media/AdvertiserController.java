@@ -35,19 +35,13 @@ import org.springframework.http.ResponseEntity;
 //@RequestMapping("/api")
 public class AdvertiserController {
 	 
-	
-//    private AdvertiserService apiRequestService;
+	 
 	@Autowired
 	AdvertiserService advertiserService;
 	
 	@RequestMapping(value = "/getAllAdvertiser",  method= RequestMethod.GET)
 	public List<Advertiser> getAdvertisers() {
-		try {
-			return advertiserService.getAll();
-		}
-		catch (Exception e) {
-			return null;
-		}
+		return advertiserService.getAll();
 	}
 	
 	@RequestMapping(value = "/advertiser/hasCredit/{id}", method = RequestMethod.GET)
@@ -57,89 +51,64 @@ public class AdvertiserController {
 	
 	@RequestMapping(value = "/advertiser/{id}", method = RequestMethod.GET)
 	public Advertiser getAdvertiserById(@PathVariable("id") long id) {
-		Advertiser advertiser = advertiserService.getById(id);
-		
+		Advertiser advertiser = advertiserService.getById(id);		
 		return advertiser;
-//	        if (advertiser == null) {
-//	            return new ResponseEntity<CustomErrorType>(new CustomErrorType("User with id " + id 
-//	                    + " not found"), HttpStatus.NOT_FOUND);
-//	        }
-//	        return new ResponseEntity<Advertiser>(advertiser, HttpStatus.OK);
-		
-//		try {
-//			Optional<Advertiser> advertiser = repository.findById(id);
-//
-//			if (!advertiser.isPresent())
-//				throw new AdvertiserNotFoundException("id-" + id);
-//
-//			return advertiser.get();			
-//		}
-//		catch (Exception e) {
-//			return null;
-//		}
 	}
 	
     @RequestMapping(value = "/advertiser/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateStudent(@RequestBody Advertiser advertiser, @PathVariable long id) {
-		try {
-			Advertiser currentAdvertiser =  advertiserService.getById(id);
-					
-	        if (currentAdvertiser == null) {
-	            return new ResponseEntity<CustomErrorType>(new CustomErrorType("Unable to upate. User with id " + id + " not found."),
-	                    HttpStatus.NOT_FOUND);
-	        }
+	public ResponseEntity<?> updateAdvertiser(@RequestBody Advertiser advertiser, @PathVariable long id) {
+    	Advertiser currentAdvertiser =  advertiserService.getById(id);	
+    	if(currentAdvertiser == null) {
+            return new ResponseEntity<CustomErrorType>(new CustomErrorType("Advertiser not found"),
+                    HttpStatus.NOT_FOUND);
+    		
+    	}
+    	else {    		
 	        currentAdvertiser.setName(advertiser.getName());
 	        currentAdvertiser.setContactName(advertiser.getContactName());
 	        currentAdvertiser.setCreditLimit(advertiser.getCreditLimit());
-	 
-	        advertiserService.update(currentAdvertiser);
-	        return new ResponseEntity<Advertiser>(currentAdvertiser, HttpStatus.OK);						 
-		}
-		catch (Exception e) {
-			return null;
-		}
+	        advertiserService.updateCreditLimit(currentAdvertiser);
+	        return new ResponseEntity<String>("Advertiser updated successfullly", HttpStatus.OK);						 
+    		
+    	}   
 	}
     
     @RequestMapping(value = "/advertiserCreditLimit/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateAdvertiser(@RequestBody double creditLimit, @PathVariable long id) {
-		try {
-			Advertiser currentAdvertiser =  advertiserService.getById(id);					
-	        if (currentAdvertiser == null) {
-	            return new ResponseEntity<CustomErrorType>(new CustomErrorType("Unable to upate. User with id " + id + " not found."),
-	                    HttpStatus.NOT_FOUND);
-	        }	        	        	        
+	public ResponseEntity<?> updateAdvertiserCreditLimit(@RequestBody double creditLimit, @PathVariable long id) {
+    	Advertiser currentAdvertiser =  advertiserService.getById(id);	
+    	if(currentAdvertiser == null) {
+            return new ResponseEntity<CustomErrorType>(new CustomErrorType("Advertiser not found"),
+                    HttpStatus.NOT_FOUND);
+    		
+    	}
+    	else {
 	        currentAdvertiser.setCreditLimit(currentAdvertiser.getCreditLimit()-creditLimit);	 
 	        advertiserService.updateCreditLimit(currentAdvertiser);
-	        return new ResponseEntity<Advertiser>(currentAdvertiser, HttpStatus.OK);						 
-		}
-		catch (Exception e) {
-			return null;
-		}
+	        return new ResponseEntity<String>("Credit Limit updated successfullly", HttpStatus.OK);						 
+    		
+    	}    	
 	}
     
 
     @RequestMapping(value = "/advertiser/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteUser(@PathVariable("id") long id) {
-    	Advertiser advertiser = advertiserService.getById(id);
-        if (advertiser == null) {
-            return new ResponseEntity<CustomErrorType>(new CustomErrorType("Unable to delete. User with id " + id + " not found."),
+    public ResponseEntity<?> deleteAdvertiser(@PathVariable("id") long id) {
+        if (advertiserService.getById(id) == null) {
+            return new ResponseEntity<CustomErrorType>(new CustomErrorType("Advertiser not found"),
                     HttpStatus.NOT_FOUND);
         }
-        advertiserService.delete(id);
-        return new ResponseEntity<Advertiser>(HttpStatus.NO_CONTENT);
+        else {
+        	advertiserService.delete(id);        
+        	return new ResponseEntity<String>("Advertiser deleted successfullly", HttpStatus.OK);
+        }
     }
     
     @RequestMapping(value = "/advertiser/", method = RequestMethod.POST)
-    public ResponseEntity<?> createAdvertiser(@RequestBody Advertiser advertiser, UriComponentsBuilder ucBuilder) {       
+    public ResponseEntity<?> createAdvertiser(@RequestBody Advertiser advertiser) {       
         if (advertiserService.doesAdvertiserExist(advertiser)) {
             return new ResponseEntity<CustomErrorType>(new CustomErrorType("Unable to create. An advertiser with name " + 
-            advertiser.getName() + " already exist."),HttpStatus.CONFLICT);
+            advertiser.getName() + " already exist."), HttpStatus.CONFLICT);
         }        
         advertiserService.create(advertiser); 
         return new ResponseEntity<Advertiser>(advertiser, HttpStatus.CREATED);
     }
-    
-    //HttpHeaders headers = new HttpHeaders();
-    //headers.setLocation(ucBuilder.path("/api/user/{id}").buildAndExpand(user.getId()).toUri());
-
 }

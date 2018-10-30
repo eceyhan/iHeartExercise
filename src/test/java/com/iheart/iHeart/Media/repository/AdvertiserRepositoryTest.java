@@ -17,16 +17,11 @@ import com.iheart.iHeart.Media.UnitTest;
 import com.iheart.iHeart.Media.Service.AdvertiserService;
 import com.iheart.iHeart.Media.model.Advertiser;
 
-import io.swagger.models.HttpMethod;
 
-import java.util.List;
 
 import static org.junit.Assert.*;
 
-//@SpringBootTest
-//@RunWith(SpringRunner.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-//@Category(UnitTest.class)
 public class AdvertiserRepositoryTest {
 	
 	
