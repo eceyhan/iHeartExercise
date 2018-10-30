@@ -38,11 +38,6 @@ public class AdvertiserRepositoryTest {
     AdvertiserRepository repository;
     
 	
- // http://www.springboottutorial.com/integration-testing-for-spring-boot-rest-services
-	//TestRestTemplate restTemplate = new TestRestTemplate();
-
-	//HttpHeaders headers = new HttpHeaders();
-	
     
     private static final long ID = 1;
     @Test
@@ -69,39 +64,33 @@ public class AdvertiserRepositoryTest {
     @Test
     public void updateAdvertiserTest() {
     	Advertiser advertiser = mock(Advertiser.class);
+    	service.update(advertiser);
     	verify(repository).update(advertiser);
     }
     
     
     @Test
     public void deleteAdvertiserTest() {
-    	service.getById(ID);
-    	verify(repository).deleteById(ID);
+    	service.delete(ID);
+    	verify(repository).delete(ID);
+    }   
+    
+    @Test
+    public void updateAdvertiserCreditLimitTest() {
+    	Advertiser advertiser = mock(Advertiser.class);
+    	service.updateCreditLimit(advertiser);
+    	verify(repository).updateCreditLimit(advertiser);
     }
     
-//    @Test
-//    public void testAllAdvertisers() throws Exception {
-//        List<Advertiser> books = (List<Advertiser>) repository.findAll2();
-//        assertFalse(books.isEmpty());
-//        assertEquals(2, books.size());
-//    }
+    @Test
+    public void hasEnoughCreditTest() {
+    	Advertiser advertiser = mock(Advertiser.class);
+    	service.hasEnoughCredit(advertiser.getId());
+    }   
     
-//    @Test
-//	public void testRetrieveAdvertiserById() {
-//
-//		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
-//
-//		ResponseEntity<String> response = RestTemplate.exchange(
-//				createURLWithPort("/students/Student1/courses/Course1"),
-//				HttpMethod.GET, entity, String.class);
-//
-//		String expected = "{id:Course1,name:Spring,description:10 Steps}";
-//
-//		JSONAssert.assertEquals(expected, response.getBody(), false);
-//	}
-    
-//    private String createURLWithPort(String uri) {
-//		return "http://localhost:8080" + uri;
-//	}
-    
+    @Test
+    public void doesAdvertiserExistTest() {
+    	Advertiser advertiser = mock(Advertiser.class);
+    	service.doesAdvertiserExist(advertiser);
+    } 
 }

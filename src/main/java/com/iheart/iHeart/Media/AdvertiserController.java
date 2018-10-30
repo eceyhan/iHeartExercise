@@ -22,7 +22,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.iheart.iHeart.Media.Service.AdvertiserService;
 import com.iheart.iHeart.Media.exception.AdvertiserNotFoundException;
 import com.iheart.iHeart.Media.model.Advertiser;
-import com.iheart.iHeart.Media.model.Student;
 import com.iheart.iHeart.Media.repository.AdvertiserRepository;
 import com.iheart.iHeart.Media.util.CustomErrorType;
 

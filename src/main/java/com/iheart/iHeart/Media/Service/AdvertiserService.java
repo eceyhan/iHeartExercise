@@ -28,18 +28,17 @@ public class AdvertiserService {
 		repository.insert(advertiser);
 	}
 	
-	public void update(Advertiser advertiser) {
-		Advertiser currentAdvertiser =  repository.getById(advertiser.getId());
-		
+	public void update(Advertiser advertiser) {		
 		repository.update(advertiser);
 	}
 	
 	public void delete(Long id) {
-		repository.deleteById(id);
+		repository.delete(id);
 	}
 	
 	public boolean doesAdvertiserExist(Advertiser advertiser) {
-		return false;
+		Advertiser currentAdvertiser = repository.getByName(advertiser.getName());
+		return currentAdvertiser != null;
 	}
 	
 	public void updateCreditLimit(Advertiser advertiser) {

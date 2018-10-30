@@ -15,11 +15,14 @@ import com.iheart.iHeart.Media.model.Advertiser;
 @Mapper
 public interface AdvertiserRepository {	 
 
+	@Select("SELECT * FROM ADVERTISER WHERE name = #{name}")
+	public Advertiser getByName(String name);
+	
 	@Select("SELECT * FROM ADVERTISER WHERE id = #{id}")
 	public Advertiser getById(long id);
 
 	@Delete("DELETE FROM ADVERTISER WHERE id = #{id}")
-	public int deleteById(long id);
+	public int delete(long id);
 
 	@Insert("INSERT INTO ADVERTISER(id, name, contactName, creditLimit) VALUES (#{id}, #{name}, #{contactName}, #{creditLimit})")
 	public int insert(Advertiser advertiser);
