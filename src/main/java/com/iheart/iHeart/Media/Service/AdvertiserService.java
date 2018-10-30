@@ -46,4 +46,12 @@ public class AdvertiserService {
 		repository.updateCreditLimit(advertiser);
 	} 
 	
+	public boolean hasEnoughCredit(Long id) {
+		Advertiser advertiser = this.getById(id);
+		if(advertiser == null) {
+			return false;
+		}
+		return advertiser.getCreditLimit() > 0;		
+	}
+	
 }

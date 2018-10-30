@@ -11,7 +11,6 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.iheart.iHeart.Media.model.Advertiser;
-import com.iheart.iHeart.Media.model.Student;
 
 @Mapper
 public interface AdvertiserRepository {	 
@@ -33,4 +32,6 @@ public interface AdvertiserRepository {
 	
 	@Update("UPDATE ADVERTISER SET creditLimit=#{creditLimit} where id=#{id}")
 	public int updateCreditLimit(Advertiser advertiser);	
+	
+	
 }

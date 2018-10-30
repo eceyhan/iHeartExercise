@@ -33,7 +33,7 @@ import org.springframework.http.ResponseEntity;
  // https://github.com/vojtechruz/rest-docs-starter/blob/master/src/main/java/com/vojtechruzicka/springfoxexample/controllers/PersonController.java
 
 @RestController
-//@RequestMapping("/product")
+//@RequestMapping("/api")
 public class AdvertiserController {
 	 
 	
@@ -49,6 +49,11 @@ public class AdvertiserController {
 		catch (Exception e) {
 			return null;
 		}
+	}
+	
+	@RequestMapping(value = "/advertiser/hasCredit/{id}", method = RequestMethod.GET)
+	public boolean advertiserHasCredit(@PathVariable("id") long id) {
+		return advertiserService.hasEnoughCredit(id);
 	}
 	
 	@RequestMapping(value = "/advertiser/{id}", method = RequestMethod.GET)
