@@ -20,16 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.iheart.iHeart.Media.Service.AdvertiserService;
-import com.iheart.iHeart.Media.exception.AdvertiserNotFoundException;
 import com.iheart.iHeart.Media.model.Advertiser;
-import com.iheart.iHeart.Media.repository.AdvertiserRepository;
-import com.iheart.iHeart.Media.util.CustomErrorType;
 
 import io.swagger.models.Model;
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 
- // https://github.com/vojtechruz/rest-docs-starter/blob/master/src/main/java/com/vojtechruzicka/springfoxexample/controllers/PersonController.java
 
 @RestController
 //@RequestMapping("/api")
@@ -45,8 +41,17 @@ public class AdvertiserController {
 	}
 	
 	@RequestMapping(value = "/advertiser/hasCredit/{id}", method = RequestMethod.GET)
-	public boolean advertiserHasCredit(@PathVariable("id") long id) {
-		return advertiserService.hasEnoughCredit(id);
+	public ResponseEntity<?> advertiserHasCredit(@PathVariable("id") long id) {
+		Advertiser advertiser = advertiserService.getById(id);
+		if(advertiser == null) {
+			return new ResponseEntity<String>("Advertiser not found",HttpStatus.NOT_FOUND);
+		}
+		else if(advertiser.getCreditLimit() == 0) {
+			return new ResponseEntity<String>("Advertiser does not have enough credit.",HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<String>("Advertiser has enough credit.",HttpStatus.OK);
+		}		
 	}
 	
 	@RequestMapping(value = "/advertiser/{id}", method = RequestMethod.GET)
@@ -59,8 +64,7 @@ public class AdvertiserController {
 	public ResponseEntity<?> updateAdvertiser(@RequestBody Advertiser advertiser, @PathVariable long id) {
     	Advertiser currentAdvertiser =  advertiserService.getById(id);	
     	if(currentAdvertiser == null) {
-            return new ResponseEntity<CustomErrorType>(new CustomErrorType("Advertiser not found"),
-                    HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>("Advertiser not found",HttpStatus.NOT_FOUND);
     		
     	}
     	else {    		
@@ -77,8 +81,7 @@ public class AdvertiserController {
 	public ResponseEntity<?> updateAdvertiserCreditLimit(@RequestBody double creditLimit, @PathVariable long id) {
     	Advertiser currentAdvertiser =  advertiserService.getById(id);	
     	if(currentAdvertiser == null) {
-            return new ResponseEntity<CustomErrorType>(new CustomErrorType("Advertiser not found"),
-                    HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>("Advertiser not found",HttpStatus.NOT_FOUND);
     		
     	}
     	else {
@@ -93,8 +96,7 @@ public class AdvertiserController {
     @RequestMapping(value = "/advertiser/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteAdvertiser(@PathVariable("id") long id) {
         if (advertiserService.getById(id) == null) {
-            return new ResponseEntity<CustomErrorType>(new CustomErrorType("Advertiser not found"),
-                    HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>("Advertiser not found", HttpStatus.NOT_FOUND);
         }
         else {
         	advertiserService.delete(id);        
@@ -103,12 +105,14 @@ public class AdvertiserController {
     }
     
     @RequestMapping(value = "/advertiser/", method = RequestMethod.POST)
-    public ResponseEntity<?> createAdvertiser(@RequestBody Advertiser advertiser) {       
-        if (advertiserService.doesAdvertiserExist(advertiser)) {
-            return new ResponseEntity<CustomErrorType>(new CustomErrorType("Unable to create. An advertiser with name " + 
-            advertiser.getName() + " already exist."), HttpStatus.CONFLICT);
-        }        
-        advertiserService.create(advertiser); 
-        return new ResponseEntity<Advertiser>(advertiser, HttpStatus.CREATED);
+    public ResponseEntity<?> createAdvertiser(@RequestBody Advertiser advertiser) {    	
+    	if(advertiserService.getByName(advertiser.getName()) == null) {
+            advertiserService.create(advertiser); 
+            return new ResponseEntity<Advertiser>(advertiser, HttpStatus.CREATED);    		
+    	}
+    	else {
+    		return new ResponseEntity<String>("Advertiser already exists", HttpStatus.CONFLICT);    		
+
+    	}
     }
 }

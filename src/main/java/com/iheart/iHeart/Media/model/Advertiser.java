@@ -1,51 +1,52 @@
 package com.iheart.iHeart.Media.model;
 
-/*import lombok.Data;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;*/
+import javax.persistence.Id;
 
 
 //@Entity
-//@Data
+//Data	
 public class Advertiser {
 
-/*	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+ 	//@Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Getter
-	@Setter
-	private String name;
-	
-	@Getter
-	@Setter
-	private String contactName;
-	
-	@Getter
-	@Setter
-	private double creditLimit;*/
-
-	private long id;
 	private String name;
 	private String contactName;
 	private double creditLimit;
 	
+//	@Getter
+//	@Setter
+//	String name;
+//	
+//	@Getter
+//	@Setter
+//	String contactName;
+//	
+//	@Getter
+//	@Setter
+//	double creditLimit;
+
+//	private long id;
+
+//	
 	public Advertiser() {
 		super();
 	}
 	
-	public Advertiser(Long id, String name, String contactName, double creditLimit) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.contactName = contactName;
-		this.creditLimit = creditLimit;
-	}
+//	public Advertiser(Long id, String name, String contactName, double creditLimit) {
+//		super();
+//		this.id = id;
+//		this.name = name;
+//		this.contactName = contactName;
+//		this.creditLimit = creditLimit;
+//	}
 	
 	public Long getId() {
 		return id;
@@ -77,11 +78,5 @@ public class Advertiser {
 
 	public void setCreditLimit(double creditLimit) {
 		this.creditLimit = creditLimit;
-	}
-	
-	@Override
-	public String toString() {
-		return String.format("Student [id=%s, name=%s, passportNumber=%s]", id, name, contactName);
-	}	
-	
+	}		
 }

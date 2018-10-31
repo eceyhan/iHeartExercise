@@ -36,21 +36,14 @@ public class AdvertiserService {
 		repository.delete(id);
 	}
 	
-	public boolean doesAdvertiserExist(Advertiser advertiser) {
-		Advertiser currentAdvertiser = repository.getByName(advertiser.getName());
-		return currentAdvertiser != null;
+	
+	public Advertiser getByName(String name) {
+		return  repository.getByName(name);
 	}
 	
+		
 	public void updateCreditLimit(Advertiser advertiser) {
 		repository.updateCreditLimit(advertiser);
-	} 
-	
-	public boolean hasEnoughCredit(Long id) {
-		Advertiser advertiser = this.getById(id);
-		if(advertiser == null) {
-			return false;
-		}
-		return advertiser.getCreditLimit() > 0;		
 	}
-	
+ 	
 }

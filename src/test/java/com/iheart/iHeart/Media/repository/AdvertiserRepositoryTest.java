@@ -8,12 +8,12 @@ import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import com.iheart.iHeart.Media.UnitTest;
 import com.iheart.iHeart.Media.Service.AdvertiserService;
 import com.iheart.iHeart.Media.model.Advertiser;
 
@@ -65,6 +65,12 @@ public class AdvertiserRepositoryTest {
     
     
     @Test
+    public void getByNameTest() {
+    	service.getByName("TEST");
+    	verify(repository).getByName("TEST");
+    }
+    
+    @Test
     public void deleteAdvertiserTest() {
     	service.delete(ID);
     	verify(repository).delete(ID);
@@ -75,17 +81,5 @@ public class AdvertiserRepositoryTest {
     	Advertiser advertiser = mock(Advertiser.class);
     	service.updateCreditLimit(advertiser);
     	verify(repository).updateCreditLimit(advertiser);
-    }
-    
-    @Test
-    public void hasEnoughCreditTest() {
-    	Advertiser advertiser = mock(Advertiser.class);
-    	service.hasEnoughCredit(advertiser.getId());
-    }   
-    
-    @Test
-    public void doesAdvertiserExistTest() {
-    	Advertiser advertiser = mock(Advertiser.class);
-    	service.doesAdvertiserExist(advertiser);
-    } 
+    }        
 }

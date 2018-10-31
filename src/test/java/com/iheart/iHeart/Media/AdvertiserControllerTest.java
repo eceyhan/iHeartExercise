@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import com.iheart.iHeart.Media.Service.AdvertiserService;
 import com.iheart.iHeart.Media.model.Advertiser;
+import com.iheart.iHeart.Media.repository.AdvertiserRepository;
 
 import org.junit.*;
 import org.mockito.*;
@@ -27,11 +28,15 @@ public class AdvertiserControllerTest {
 	AdvertiserService advertiserService;
 	
 	@Mock
+	AdvertiserRepository repository;
+	
+	@Mock
 	Advertiser advertiser;
 	
 	
 	private static final long ID = 1;
-	
+	private static final double creditLimit = 10;
+
 	@Test
 	public void getAdvertiserByIdTest() {
 		when(advertiserService.getById(ID)).thenReturn(advertiser);				
@@ -47,25 +52,40 @@ public class AdvertiserControllerTest {
 		assertEquals(controller.getAdvertisers().size(), advertisers.size());
 	}
 	
+	
 	@Test
-	public void advertiserHasCredit() {
+	public void advertiserHasCreditWhenAdvertiserIsPresent() {
 		when(advertiserService.getById(ID)).thenReturn(advertiser);
-		when(advertiserService.hasEnoughCredit(ID)).thenReturn(true);						
-		assertEquals(controller.advertiserHasCredit(ID), true);
-	}
+		when(advertiser.getCreditLimit()).thenReturn(creditLimit);
+		assertEquals(controller.advertiserHasCredit(ID).getStatusCode(), HttpStatus.OK);
+	} 
 	
+	static double test = 0;
 	@Test
-	public void createAdvertiserTestWhenNameDoesNotExist() {
-		when(advertiserService.doesAdvertiserExist(advertiser)).thenReturn(false);
-		assertEquals(controller.createAdvertiser(advertiser).getStatusCode(), HttpStatus.CREATED);
-	}
-	
+	public void advertiserHasCreditWhenAdvertiserIsPresent2() {
+		when(advertiserService.getById(ID)).thenReturn(advertiser);
+		when(advertiser.getCreditLimit()).thenReturn(test);
+		assertEquals(controller.advertiserHasCredit(ID).getStatusCode(), HttpStatus.OK);
+	} 
 
 	@Test
-	public void createAdvertiserTestWhenNameDoesExist() {
-		when(advertiserService.doesAdvertiserExist(advertiser)).thenReturn(true);
-		assertEquals(controller.createAdvertiser(advertiser).getStatusCode(), HttpStatus.CONFLICT);
-	}
+	public void advertiserHasCreditWhenAdvertiserIsNotPresent() {
+		when(advertiserService.getById(ID)).thenReturn(null);
+		assertEquals(controller.advertiserHasCredit(ID).getStatusCode(), HttpStatus.NOT_FOUND);
+	} 
+
+
+ 
+	
+	
+ 
+	
+
+//	@Test
+//	public void createAdvertiserTestWhenNameDoesExist() {		
+//		when(repository.getByName("TEST")).thenReturn(advertiser);		
+//		assertEquals(controller.createAdvertiser(advertiser).getStatusCode(), HttpStatus.CONFLICT);
+//	}
 
 	
 	@Test
@@ -91,6 +111,20 @@ public class AdvertiserControllerTest {
 	public void deleteAccountTestWhenAdvertiserIsPresent() {
 		when(advertiserService.getById(ID)).thenReturn(advertiser);
 		assertEquals(controller.deleteAdvertiser(ID).getStatusCode(), HttpStatus.OK);
+	}
+	
+	@Test
+	public void createAdvertiserTestWhenNameDoesNotExist() {
+		when(advertiser.getName()).thenReturn("TEST");
+		when(advertiserService.getByName(advertiser.getName())).thenReturn(null);		
+		assertEquals(controller.createAdvertiser(advertiser).getStatusCode(), HttpStatus.CREATED);
+	}
+	
+	@Test
+	public void createAdvertiserTestWhenNameDoesExist() {
+		when(advertiser.getName()).thenReturn("TEST");
+		when(advertiserService.getByName(advertiser.getName())).thenReturn(advertiser);		
+		assertEquals(controller.createAdvertiser(advertiser).getStatusCode(), HttpStatus.CONFLICT);
 	}
 	
 	

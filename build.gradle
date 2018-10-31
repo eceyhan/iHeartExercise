@@ -7,9 +7,22 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'com.h2database:h2:1.4.191'
 	}
 }
 
+plugins {
+    id "org.flywaydb.flyway" version "5.2.1"
+}
+
+flyway {
+    //url = 'jdbc:h2:file:./db/flyway_iheart'
+    url = 'jdbc:h2:file:./db/flyway_iheart2'
+    user = 'sa'
+    //locations = 'classpath:db/migration'
+    //locations = ['filesystem:src/main/resources/db/migration']
+    schemas= ['flyway-ihear222t']
+}
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -66,7 +79,7 @@ dependencies {
 
 	//testImplementation('org.junit.jupiter:junit-jupiter-api:5.1.0')
     //testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.1.0')
-    
+     
      //testCompile group: 'junit', name: 'junit'
 }
 
