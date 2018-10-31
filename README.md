@@ -1,4 +1,4 @@
-Develop
+Develop:
     Download the zip file into eclipse
 	Right-click on the  project --> Configure --> Add Gradle Nature
 	Right-click on the  project -->Graddle --> Refresh Gradle Project
@@ -6,10 +6,11 @@ Develop
 	gradlew tasks
 	gradlew bootJar
 	
-To run the app from the command line, run the following:
-   java -jar build/libs/"iHeart Media-0.0.1-SNAPSHOT-boot.jar"
+Run:
+	To run the app from the command line, run the following:
+   	java -jar build/libs/"iHeart Media-0.0.1-SNAPSHOT-boot.jar"
 
-Test 
+Test: 
 	gradlew test build
 	gradlew test jacocoTestReport
 	open this page from your browser file://YOUR_PROJECT_PATH/build/reports/tests/test/index.html
