@@ -1,0 +1,16 @@
+ 
+
+Display the status of the application
+http://localhost:8090/actuator/health
+
+
+Lists environment specific information
+http://localhost:8090/actuator/env
+
+
+Http trace for the application
+http://localhost:8090/actuator/httptrace
+
+
+Log information for the app
+http://localhost:8090/actuator/loggers

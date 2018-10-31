@@ -21,7 +21,7 @@ flyway {
     user = 'sa'
     //locations = 'classpath:db/migration'
     //locations = ['filesystem:src/main/resources/db/migration']
-    schemas= ['flyway-ihear222t']
+    schemas= ['flyway-iheart']
 }
 
 apply plugin: 'java'
